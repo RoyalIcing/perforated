@@ -24,9 +24,9 @@ Simple but powerful way to make forms in PHP.
 - Form processing and validation is completely separate from form display.
 - Submitted forms have their own namespace e.g. $_POST['formID']
 
-#### Creating a form
-
 ### Example
+
+#### Creating a form
 
 ```php
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
@@ -145,7 +145,7 @@ function exampleExternalValues()
 ```php
 // Check if form is being submitted and if so, process the submitted entries.
 $resultsForSubmitVideo = perforatedFormCheckAndProcess($formOptions, array(
-	'externalValues' => 'exampleExternalValues' // Options and callback are kept separate to make having $formOptions kept as JSON cleaner.
+	'externalValues' => 'exampleExternalValues' // Options and callbacks are kept separate to enabled $formOptions to be created as pure JSON.
 ));
 ```
 

@@ -108,7 +108,7 @@ function perforatedProblemIDsToMessages()
 	);
 }
 
- // Options and callbacks are kept separate to enabled the ability of having $options kept as JSON.
+// Options and callbacks are kept separate to enabled $options to be created as pure JSON.
 function perforatedFormCheckAndProcess($options, $callbacks = null)
 {
 	$results = $options;

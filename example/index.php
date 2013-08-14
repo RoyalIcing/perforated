@@ -154,7 +154,7 @@ function exampleExternalValues()
 }
 
 
-// Options and callbacks are kept separate to enabled the ability of having $formOptions kept as JSON.
+// Options and callbacks are kept separate to enabled $formOptions to be created as pure JSON.
 $perforatedCallbacks = array(
 	'externalValues' => 'exampleExternalValues'
 );
