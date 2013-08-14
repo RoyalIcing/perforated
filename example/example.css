@@ -18,12 +18,15 @@ input
 	width: 600px;
 	padding-left: 50px;
 	padding-right: 50px;
+	padding-bottom:;
 	margin: auto;
 	background-color: #eaeaea;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.55);
 }
 
 #content header,
-.perforatedForm footer
+.perforatedForm footer,
+#thanks
 {
 	padding-left: 50px;
 	padding-right: 50px;
@@ -34,8 +37,16 @@ input
 {
 	padding-top: 51px;
 	padding-bottom: 27px;
-	border-bottom: 1px dotted #3d3d3d;
 	margin-bottom: 27px;
+}
+hr
+{
+	border: none;
+}
+#content header,
+hr
+{
+	border-bottom: 1px dotted #303030;
 }
 
 #content h1,
@@ -100,16 +111,23 @@ input
 .perforatedForm input[type="url"],
 .perforatedForm textarea
 {
-	min-width: 500px;
+	box-sizing: border-box;
+	width: 600px;
+	max-width: 600px;
+}
+
+.perforatedForm footer,
+#thanks
+{
+	padding-top: 24px;
+	padding-bottom: 24px;
+	background-color: #f6f6f6;
 }
 
 .perforatedForm footer
 {
-	padding-top: 24px;
-	padding-bottom: 24px;
 	margin-top: 48px;
 	text-align: right;
-	background-color: #f6f6f6;
 }
 
 .perforatedForm input.submitApplicationButton
@@ -137,4 +155,24 @@ input
 	font-size: 16px;
 	line-height: 24px;
 	color: #c60000;
+}
+
+
+#thanks ul
+{
+	padding: 0;
+	margin: 0;
+	font-size: 18px;
+	line-height: 24px;
+	list-style-type: circle;
+	color: #aaa;
+}
+#thanks ul li
+{
+	margin-bottom: 8px;
+}
+#thanks ul strong
+{
+	font-weight: inherit;
+	color: black;
 }

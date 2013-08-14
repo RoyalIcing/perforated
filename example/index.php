@@ -192,6 +192,16 @@ if ($resultsForSubmitVideo['isBeingSubmitted'] && $resultsForSubmitVideo['entrie
 ?>
 <div id="thanks">
 <h3>Thanks <?= glazeText($processedEntries['name']['value']) ?> for submitting your video!</h3>
+<p><em>What was submitted:</em></p>
+<ul>
+<?php
+foreach ($processedEntries as $entryID => $entryInfo):
+?>
+<li><?= glazeText($entryID) ?>: <strong><?= glazeText($entryInfo['value']) ?></strong></li>
+<?php
+endforeach;
+?>
+</ul>
 </div>
 <?php
 else:
