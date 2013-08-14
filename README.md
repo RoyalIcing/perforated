@@ -1,18 +1,27 @@
 perforated
 =====
 
-Simple but powerful way to make forms in code. Easy to use and easy to read.
+Simple but powerful way to make forms in code.
+
+#### Easy to use, and easy to read
 
 - Create your form using simple readable mapped arrays. Even define them in a JSON file.
 - Group related entries together in a `<fieldset>`.
 - Easily apply styles in CSS.
+
+#### Have sections appear and disappear, with no extra JS.
+
 - Subsections can be made dependant, so they only show when a particular entry is on.
-- Submitted forms have their own namespace e.g. $_POST['formID']
-- Form processing and validation is completely separate from form display.
+
+#### Extendable
+
 - Easily extend validation. Add your own error messages.
 - External values can be used for dependencies or to automatically fill entries.
+- Form processing and validation is completely separate from form display.
+- Submitted forms have their own namespace e.g. $_POST['formID']
 
-### Example:
+#### Creating a form
+
 ```php
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
 
@@ -107,7 +116,11 @@ $formOptions = array(
 		)
 	)
 );
+```
 
+#### Using external values from the server
+
+```php
 
 function exampleExternalValues()
 {
@@ -119,14 +132,20 @@ function exampleExternalValues()
 	);
 	return $specialValues;
 }
+```
 
+#### Validating
 
+```php
 // Check if form is being submitted and if so, process the submitted entries.
 $resultsForSubmitVideo = perforatedFormCheckAndProcess($formOptions, array(
 	'externalValues' => 'exampleExternalValues' // Options and callback are kept separate to make having $formOptions kept as JSON cleaner.
 ));
+```
 
+#### Doing something with the results
 
+```php
 ?>
 <div id="content">
 <h1>Video Submissions</h1>
@@ -151,6 +170,11 @@ if ($resultsForSubmitVideo['isBeingSubmitted'] && $resultsForSubmitVideo['entrie
 <div id="thanks">
 <h3>Thanks <?= glazeText($processedEntries['name']['value']) ?> for submitting your video!</h3>
 </div>
+```
+
+#### Displaying the form
+
+```php
 <?php
 else:
 	// Display the form, which does a POST request to the current page.
