@@ -9,7 +9,7 @@ This content is released under the MIT License: http://opensource.org/licenses/M
 define ('GLAZE_TYPE_TEXT', 'text');
 define ('GLAZE_TYPE_URL', 'URL');
 define ('GLAZE_TYPE_EMAIL_ADDRESS', 'emailAddress');
-define ('GLAZE_TYPE_MAILTO_EMAIL_ADDRESS_URL', 'mailToEmailAddressURL');
+define ('GLAZE_TYPE_EMAIL_ADDRESS_MAILTO_URL', 'emailAddressMailtoURL');
 define ('GLAZE_TYPE_SPACED_LIST_ATTRIBUTE', 'spacedListAttribute');
 define ('GLAZE_TYPE_PREGLAZED', 'preglazed');
 
@@ -46,7 +46,7 @@ function glazeEmailAddress($emailAddress)
 	return glazeNumericallyEncodeString($emailAddress);
 }
 
-function glazeMailToEmailAddressURL($emailAddress)
+function glazeEmailAddressMailtoURL($emailAddress)
 {
 	$emailAddressParts = explode('@', $emailAddress);
 	$emailAddressURL = 'mailto:' .rawurlencode($emailAddressParts[0]). '@' .rawurlencode($emailAddressParts[1]);
@@ -72,27 +72,6 @@ function glazeNumberWithOrdinals($number)
 	return $number . $suffix;
 }
 
-/* Dates */
-
-function glazeFullDateTime($time)
-{
-	return strftime('%A, %e %B %Y %l:%M:%S %p', $time);
-}
-
-function glazeDayTime($time)
-{
-	$dayWithOrdinal = glazeNumberWithOrdinals(strftime('%e', $time));
-	return strftime('%A ' .$dayWithOrdinal. ', %l:%M:%S %p', $time);
-}
-
-function glazeShortDate($time, $showYear = true)
-{
-	if ($showYear)
-		return strftime('%e %B %Y', $time);
-	else
-		return strftime('%e %B', $time);
-}
-
 
 function glazeValue($value, $valueType = null)
 {
@@ -104,6 +83,9 @@ function glazeValue($value, $valueType = null)
 	}
 	else if ($valueType === GLAZE_TYPE_EMAIL_ADDRESS) {
 		return glazeEmailAddress($value);
+	}
+	else if ($valueType === GLAZE_TYPE_EMAIL_ADDRESS_MAILTO_URL) {
+		return glazeEmailAddressMailtoURL($value);
 	}
 	else if ($valueType === GLAZE_TYPE_SPACED_LIST_ATTRIBUTE && is_array($value)) {
 		$value = implode(' ', $value);
