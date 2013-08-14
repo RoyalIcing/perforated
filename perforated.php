@@ -66,7 +66,7 @@ function perforatedFormValidateEntry($entry, $value)
 		}
 	}
 	else if ($entry['type'] === 'integer' && !empty($value)) {
-		if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
+		if (filter_var($value, FILTER_VALIDATE_INT) === false) {
 			$entryProblems['invalid'] = true;
 		}
 	}
