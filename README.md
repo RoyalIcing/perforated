@@ -1,7 +1,7 @@
 perforated
 =====
 
-Easy to use way to make forms in code. Easy to use, easy to read.
+Simple but powerful way to make forms in code. Easy to use and easy to read.
 
 - Create your form using simple readable mapped arrays. Even define them in a JSON file.
 - Group related entries together in a `<fieldset>`.
