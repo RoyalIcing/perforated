@@ -1,0 +1,32 @@
+.perforatedForm
+{
+	fieldset
+	{
+		overflow: hidden; /* Encompass floating elements */
+		max-height: 1000px; /* Change this height if needed for taller content, though it will affect the transition animation. */
+		visibility: visible;
+		opacity: 1.0;
+		border: none;
+		/* Add a transition here for a nicer experience */
+		/* Transition mixin from http://bourbon.io/ */
+		@include transition(visibility 0.22s ease-out, opacity 0.22s ease-out, max-height 0.22s ease-out);
+	
+		&.dependenciesUnfulfilled
+		{
+			max-height: 0;
+			visibility: hidden;
+			opacity: 0.0;
+		}
+	}
+
+	label
+	{
+		display: block;
+		clear: both;
+	}
+	
+	.problem
+	{
+		display: block;
+	}
+}
