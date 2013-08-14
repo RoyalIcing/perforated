@@ -1,26 +1,32 @@
 perforated
 =====
 
-Simple but powerful way to make forms in code.
+Simple but powerful way to make forms in PHP.
 
-#### Easy to use, and easy to read
+#### Easy to create, easy to read
 
-- Create your form using simple readable mapped arrays. Even define them in a JSON file.
-- Group related entries together in a `<fieldset>`.
-- Easily apply styles in CSS.
+- Create your form using simple readable keyed arrays. Even define them in a JSON file.
+- Adding new entries to your form is just a few lines of simple code.
+- Use HTML5 entry types such as URL, email address, number, and checkbox.
+- Automatically validates on the server with no extra code.
+- Automatically shows type-specific errors for incorrectly entered fields.
+- Easily group related entries together in a `<fieldset>`.
+- Very easy to style in CSS.
 
 #### Have sections appear and disappear, with no extra JS.
 
-- Subsections can be made dependant, so they only show when a particular entry is on.
+- Subsections can be made dependant on another entry, so they only show when that particular entry is on.
 
 #### Extendable
 
 - Easily extend validation. Add your own error messages.
-- External values can be used for dependencies or to automatically fill entries.
+- External values can be used to automatically fill entries or for dependencies.
 - Form processing and validation is completely separate from form display.
 - Submitted forms have their own namespace e.g. $_POST['formID']
 
 #### Creating a form
+
+### Example
 
 ```php
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
