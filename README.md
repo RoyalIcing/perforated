@@ -3,17 +3,17 @@ perforated
 
 Simple but powerful way to make forms in PHP.
 
-#### Easy to create, easy to read
+#### Easy to create, read, and change later on
 
-- Create your form using simple readable keyed arrays. Even define them in a JSON file.
-- Adding new entries to your form is just a few lines of simple code.
+- Create your form using readable key-based arrays. Even define the form in a JSON file.
+- Very easy-to-understand syntax. Adding new entries to your form is just adding a few lines of simple code.
 - Use HTML5 entry types such as URL, email address, number, and checkbox.
-- Automatically validates on the server with no extra code.
+- Automatically validates on the server with no extra code for base types.
 - Automatically shows type-specific errors for incorrectly entered fields.
 - Easily group related entries together in a `<fieldset>`.
-- Very easy to style in CSS.
+- Very easy to style in CSS. Target specific form entries. Target all entries of a certain type.
 
-#### Have sections appear and disappear, with no extra JS.
+#### Dependant sections that appear and disappear with no extra JS.
 
 - Subsections can be made dependant on another entry, so they only show when that particular entry is on.
 
@@ -140,7 +140,7 @@ function exampleExternalValues()
 }
 ```
 
-#### Validating
+#### Validating & processing
 
 ```php
 // Check if form is being submitted and if so, process the submitted entries.
@@ -149,7 +149,7 @@ $resultsForSubmitVideo = perforatedFormCheckAndProcess($formOptions, array(
 ));
 ```
 
-#### Doing something with the results
+#### Working with the results
 
 ```php
 ?>
