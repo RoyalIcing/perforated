@@ -1,0 +1,3 @@
+[submodule "lib/glaze"]
+	path = lib/glaze
+	url = git://github.com/BurntCaramel/glaze.git

@@ -12,7 +12,6 @@ Requires jQuery http://jquery.com/ or something compatibile.
 
 */
 
-console.log('js loaded');
 
 function perforatedFormsUpdateDependency($forms, entryID, on)
 {

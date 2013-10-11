@@ -17,8 +17,10 @@ TODO:
 
 */
 
+
+// Perforated uses Glaze to display text and values.
 if (!function_exists('glazeText')) {
-	require_once('glaze.php');
+	require_once('../lib/glaze/glaze.php');
 }
 
 
@@ -298,8 +300,8 @@ function perforatedFormDisplayEntries($options, $callbacks = null)
 			endif;
 ?>
 <fieldset<?php
-echo glazeAttribute('class', $groupClasses);
-echo glazeAttributeCheck('data-dependencies-remaining-count', $dependantOnEntryIDs, $depenciesRemainingCount);
+glazyAttribute('class', $groupClasses);
+glazyAttributeCheck('data-dependencies-remaining-count', $dependantOnEntryIDs, $depenciesRemainingCount);
 ?>>
 <?php
 			foreach ($formStructureElement['entries'] as $entryID):
@@ -329,10 +331,10 @@ function perforatedFormDisplayEntry($entryID, $entryDetails, $options, $callback
 	$entryTextTag = !empty($options['textTagName']) ? $options['textTagName'] : 'h5';
 	
 ?><label<?php
-echo glazeAttribute('id', $entryID);
-echo glazeAttribute('class', $entryType);
-echo glazeAttribute('data-entry-i-d', $entryID);
-?>><<?=$entryTextTag ?>><?php
+glazyAttribute('id', $entryID);
+glazyAttribute('class', $entryType);
+glazyAttribute('data-entry-i-d', $entryID);
+?>><<?=$entryTextTag?>><?php
 	echo glazeText($entryTitle);
 	
 	if (isset($options['problems'][$entryID])):
@@ -360,27 +362,27 @@ echo glazeAttribute('data-entry-i-d', $entryID);
 
 	if (($inputType === 'text' && empty($entryDetails['multipleLines'])) || $inputType === 'email' || $inputType === 'url' || $inputType === 'number' || $inputType === 'checkbox'):?>
 <input<?php
-echo glazeAttribute('type', $inputType);
-echo glazeAttribute('name', $entryInputName);
-echo glazeAttributeCheck('required', $entryDetails['required'], 'required');
+glazyAttribute('type', $inputType);
+glazyAttribute('name', $entryInputName);
+glazyAttributeCheck('required', $entryDetails['required'], 'required');
 
 if ($inputType === 'checkbox'):
-	echo glazeAttributeCheck('checked', $entryDetails['value'], 'checked');
-	echo glazeAttribute('data-on-title', $entryDetails['titleWhenOn']);
-	echo glazeAttribute('data-off-title', $entryDetails['titleWhenOff']);
+	glazyAttributeCheck('checked', $entryDetails['value'], 'checked');
+	glazyAttribute('data-on-title', $entryDetails['titleWhenOn']);
+	glazyAttribute('data-off-title', $entryDetails['titleWhenOff']);
 else:
-	echo glazeAttribute('value', $entryValue);
+	glazyAttribute('value', $entryValue);
 endif;
 
 if ($entryType === 'integer'):
-	echo glazeAttribute('step', '1');
+	glazyAttribute('step', '1');
 endif;
 ?>>
 <?php
 	elseif ($inputType === 'text' && !empty($entryDetails['multipleLines'])):?>
 <textarea<?php
-echo glazeAttribute('name', $entryInputName);
-echo glazeAttributeCheck('required', $entryDetails['required'], 'required');
+glazyAttribute('name', $entryInputName);
+glazyAttributeCheck('required', $entryDetails['required'], 'required');
 ?> cols="40" rows="4"><?= glazeText($entryValue) ?></textarea>
 <?php
 	endif;

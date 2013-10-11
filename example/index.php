@@ -17,10 +17,10 @@ function get_header()
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>Perforated Example: Submit Video</title>
-<link rel="stylesheet" type="text/css" href="../perforated.css">
+<link rel="stylesheet" type="text/css" href="../src/perforated.css">
 <link rel="stylesheet" type="text/css" href="./example.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js" charset="utf-8"></script>
-<script src="../perforated.js" charset="utf-8"></script>
+<script src="../src/perforated.js" charset="utf-8"></script>
 </head>
 <body>
 <?php
@@ -34,7 +34,7 @@ function get_footer()
 <?php
 }
 
-require_once('../perforated.php');
+require_once('../src/perforated.php');
 
 
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
@@ -125,8 +125,8 @@ $formOptions = array(
 	'automaticallyFillEntriesFrom' => array(
 		// Using external value 'loggedInMember', grab the following values:
 		'loggedInMember' => array(
-			'name' => 'name', // Entry value for 'name' is automatically filled from $externalValues['loggedInMember']['name']
-			'email' => 'emailAddress', // Entry value for 'email' is automatically filled from $externalValues['loggedInMember'][emailAddress]
+			'name' => 'name', // $externalValues['loggedInMember']['name'] is used to automatically fill entry value for 'name'
+			'emailAddress' => 'email', // $externalValues['loggedInMember'][emailAddress] is used to automatically fill entry value for 'email'
 		)
 	)
 );
@@ -145,12 +145,11 @@ function exampleLoggedInMemberInfo()
 function exampleExternalValues()
 {
 	$loggedInMemberInfo = exampleLoggedInMemberInfo();
-	$specialValues = array(
+	return array(
 		'loggedIn' => !empty($loggedInMemberInfo),
 		'loggedOut' => empty($loggedInMemberInfo),
 		'loggedInMember' => $loggedInMemberInfo
 	);
-	return $specialValues;
 }
 
 
