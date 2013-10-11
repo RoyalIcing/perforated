@@ -199,9 +199,13 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 				continue;
 			endif;
 			
-			foreach ($valuesLookUp as $entryID => $sourceKey):
-				$submittedValues[$entryID] = $sourceValue[$sourceKey];
-			endforeach;
+			if (is_array($valuesLookUp)):
+				foreach ($valuesLookUp as $sourceKey => $entryID):
+					$submittedValues[$entryID] = $sourceValue[$sourceKey];
+				endforeach;
+			else:
+				$submittedValues[$valuesLookUp] = $sourceValue;
+			endif;
 		endforeach;
 	endif;
 	
@@ -276,6 +280,10 @@ function perforatedFormDisplayEntries($options, $callbacks = null)
 	if (!empty($options['structure'])):
 		$formStructure = $options['structure'];
 		foreach ($formStructure as $formStructureElement):
+			if (!empty($formStructureElement['hidden'])):
+				continue;
+			endif;
+			
 			$groupID = $formStructureElement['id'];
 			$groupClasses = array($groupID);
 			
