@@ -221,4 +221,4 @@ endif;
 
 ### TODO
 
-- Front-end validation, probably tie in with an existing JavaScript project instead of writing form scratch.
+- Front-end validation, probably tie in with an existing JavaScript project instead of writing from scratch.
