@@ -1,35 +1,53 @@
-perforated
-=====
+## Perforated – Simple yet pretty powerful forms
 
-Simple but powerful way to make forms in PHP.
+Perforated forms are easy to create, read, and change later on.
+Define your form's structure using a simple set up of key-based arrays. See below for an example.
+The syntax is so simple you can even define your form in a JSON file, if you wish.
 
-#### Easy to create, read, and change later on
+### Edit easily.
 
-- Create your form using readable key-based arrays. Even define the form in a JSON file.
-- Very easy-to-understand syntax. Adding new entries to your form is just adding a few lines of simple code.
-- Use HTML5 entry types such as URL, email address, number, and checkbox.
-- Automatically validates on the server with no extra code for base types.
-- Automatically shows type-specific errors for incorrectly entered fields.
-- Easily group related entries together in a `<fieldset>`.
-- Very easy to style in CSS. Target specific form entries. Target all entries of a certain type.
+The easy-to-understand syntax means you can quickly create a form in two minutes.
+Use HTML5 entry types such as URL, email address, number, and checkbox.
+They are automatically validated on the server with no extra code.
 
-#### Dependant sections that appear and disappear with no extra JS.
+Come back to it later and add, edit, remove.
+Adding new entries means just adding a few lines of simple code.
 
-- Subsections can be made dependant on another entry, so they only show when that particular entry is on.
+### Style sensibly.
 
-#### Extendable
+Perforated is designed to be smart. It groups related entries together in `<fieldset>` elements.
+Entries are automatically created with an associated `<label>`.
+This means it is very easy to style in CSS.
+Target specific form entries.
+Target all entries of a certain type.
 
-- Easily extend validation. Add your own error messages.
-- External values can be used to automatically fill entries or for dependencies.
-- Form processing and validation is completely separate from form display.
-- Submitted forms have their own namespace e.g. $_POST['formID']
+### Make sections dependant.
 
-### Example
+Sections can be made to only show when a checkbox is on with one line. Just declare what you want, there's no extra JS.
 
-#### Creating a form
+### Extend.
+
+Perforated will automatically shows type-specific errors for incorrectly entered fields.
+Easily extend this validation. Add your own error messages.
+
+Form processing and validation is completely separate from form display, so extend or even replace either however you wish.
+
+### Namespaced.
+
+Submitted forms have their own namespace e.g. `$_POST['formID']`
+This means it will not clash with other POST variables, use `name` without worry in WordPress: http://stackoverflow.com/questions/15810948/post-returns-empty-on-form-submit-in-wordpress
+
+### Use external values for dependencies.
+
+External values can be used to automatically fill entries or for dependencies, using a simple callback.
+e.g. Only use a particular part of a form if the user is logged in.
+
+
+### Example:
 
 ```php
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
+define ('BURNT_ENDASH', "\xE2\x80\x93");
 
 // This can be written using PHP arrays, or loaded from a JSON file.
 $formOptions = array(
@@ -39,7 +57,7 @@ $formOptions = array(
 		'videoLink' => array(
 			'title' => 'Video link '.BURNT_ENDASH.' Vimeo / Youtube',
 			'value' => '',
-			'type' => 'text',
+			'type' => 'url',
 			'required' => true
 		),
 		'story' => array(
@@ -200,3 +218,7 @@ endif;
 <?php
 
 ```
+
+### TODO
+
+- Front-end validation, probably tie in with an existing JavaScript project instead of writing form scratch.
