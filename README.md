@@ -1,17 +1,16 @@
-## Perforated – Simple yet pretty powerful forms
+# Perforated – simple yet pretty powerful forms
 
-Perforated forms are easy to create, read, and change later on.
-Define your form's structure using a simple set up of key-based arrays. See below for an example.
-The syntax is so simple you can even define your form in a JSON file, if you wish.
+Perforated forms are easy to create, read, and change later on. Define your form’s structure using a simple set up of key-based arrays, in PHP or JSON.
 
 ### Edit easily.
 
-The easy-to-understand syntax means you can quickly create a form in two minutes.
+The easy-to-understand syntax means you can quickly create a form in a few minutes.
 Use HTML5 entry types such as URL, email address, number, and checkbox.
 They are automatically validated on the server with no extra code.
 
 Come back to it later and add, edit, remove.
 Adding new entries means just adding a few lines of simple code.
+The syntax is so simple you can even define your form in a JSON file, if you wish.
 
 ### Style sensibly.
 
@@ -21,29 +20,28 @@ This means it is very easy to style in CSS.
 Target specific form entries.
 Target all entries of a certain type.
 
-### Make sections dependant.
-
-Sections can be made to only show when a checkbox is on with one line. Just declare what you want, there's no extra JS.
-
 ### Extend.
 
 Perforated will automatically shows type-specific errors for incorrectly entered fields.
 Easily extend this validation. Add your own error messages.
 
-Form processing and validation is completely separate from form display, so extend or even replace either however you wish.
+Form processing and validation is completely separate from form display, so extend or replace how your form is validated or how it is displayed however you wish.
 
-### Namespaced.
+### Automatically namespaced.
 
 Submitted forms have their own namespace e.g. `$_POST['formID']`
-This means it will not clash with other POST variables, use `name` without worry in WordPress: http://stackoverflow.com/questions/15810948/post-returns-empty-on-form-submit-in-wordpress
+This means it will not clash with other POST variables, so use fields like `name` without worry in WordPress: http://stackoverflow.com/questions/15810948/post-returns-empty-on-form-submit-in-wordpress
 
-### Use external values for dependencies.
+### Make sections dependant on whatever you wish.
 
-External values can be used to automatically fill entries or for dependencies, using a simple callback.
-e.g. Only use a particular part of a form if the user is logged in.
+Sections can be made to only show when a checkbox is on with one line.
+Just declare what you want, there's no extra JS.
+
+External values can be used to automatically fill entries or for dependencies to turn sections on and off, just by using a simple callback.
+For example, only show and use a particular part of a form if the user is logged in – no complicated if-statements.
 
 
-### Example:
+## Example
 
 ```php
 define ('EXAMPLE_SUBMIT_VIDEO', 'submitVideo');
@@ -55,7 +53,7 @@ $formOptions = array(
 	// All the entries to be used in the form.
 	'entries' => array(
 		'videoLink' => array(
-			'title' => 'Video link '.BURNT_ENDASH.' Vimeo / Youtube',
+			'title' => 'Video link '.BURNT_ENDASH.' Vimeo / YouTube',
 			'value' => '',
 			'type' => 'url',
 			'required' => true
@@ -142,7 +140,7 @@ $formOptions = array(
 );
 ```
 
-#### Using external values from the server
+## Using external values from the server
 
 ```php
 
@@ -158,7 +156,7 @@ function exampleExternalValues()
 }
 ```
 
-#### Validating & processing
+## Validating & processing
 
 ```php
 // Check if form is being submitted and if so, process the submitted entries.
@@ -167,7 +165,7 @@ $resultsForSubmitVideo = perforatedFormCheckAndProcess($formOptions, array(
 ));
 ```
 
-#### Working with the results
+## Working with submitted results
 
 ```php
 ?>
@@ -196,7 +194,7 @@ if ($resultsForSubmitVideo['isBeingSubmitted'] && $resultsForSubmitVideo['entrie
 </div>
 ```
 
-#### Displaying the form
+## Displaying the form
 
 ```php
 <?php
@@ -221,4 +219,4 @@ endif;
 
 ### TODO
 
-- Front-end validation, probably tie in with an existing JavaScript project instead of writing from scratch.
+- Client-side JavaScript validation, probably tie in with an existing project instead of writing from scratch.
