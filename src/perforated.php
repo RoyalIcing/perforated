@@ -18,6 +18,8 @@ TODO:
 */
 
 
+define ('PERFORATED_VERSION', '1.5');
+
 // Perforated uses Glaze to display text and values.
 if (!function_exists('glazeText')) {
 	require_once('../lib/glaze/glaze.php');
