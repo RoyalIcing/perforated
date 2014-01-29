@@ -225,7 +225,7 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 			$detailValue = isset($submittedValues[$entryID]);
 		else:
 			// TODO: add a callback here:
-			$detailValue = trim($submittedValues[$entryID]);
+			$detailValue = isset($submittedValues[$entryID]) ? trim($submittedValues[$entryID]) : '';
 		endif;
 		
 		// Use the entry's info and replace the value with the submitted value.
