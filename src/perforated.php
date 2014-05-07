@@ -4,7 +4,7 @@
 
 ................................................................................
 
-Author 2013: Patrick Smith
+Copyright 2013-2014: Patrick Smith
 
 This content is released under the MIT License:
 http://opensource.org/licenses/MIT
