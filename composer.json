@@ -1,7 +1,7 @@
 {
 	"name": "burntcaramel/perforated",
 	"description": "Simple yet pretty powerful forms using associated arrays or JSON, with automatic server validation, dependencies and more.",
-	"keywords": ["form", "forms", "json", "validate", "dependency"],
+	"keywords": ["form", "forms", "json", "validate", "dependency", "perforated", "perforate"],
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.0"
