@@ -18,7 +18,7 @@ TODO:
 */
 
 
-define ('PERFORATED_VERSION', '1.5');
+define ('PERFORATED_VERSION', '1.5.1');
 
 // Perforated uses Glaze to display text and values.
 if (!function_exists('glazeText')) {
@@ -78,6 +78,18 @@ function perforatedFormValidateEntry($entry, $value)
 	return $entryProblems;
 }
 
+function perforatedFormAdjustEntryValue($entry, $detailValue)
+{
+	if (($entry['type'] === 'url') && !empty($detailValue)):
+		$offset = stripos($detailValue, '://');
+		if ($offset === false):
+			$detailValue = "http://{$detailValue}";
+		endif;
+	endif;
+	
+	return $detailValue;
+}
+
 // HTML <input type="your return value">
 function perforatedInputElementTypeForEntryType($entryType)
 {
@@ -133,7 +145,8 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 	// Callbacks
 	$callbacksDefault = array(
 		'externalValues' => 'perforatedDefaultExternalValues',
-		'validateEntry' => 'perforatedFormValidateEntry'
+		'validateEntry' => 'perforatedFormValidateEntry',
+		'adjustEntryValue' => 'perforatedFormAdjustEntryValue'
 	);
 	$callbacks = empty($callbacks) ? $callbacksDefault : array_merge($callbacksDefault, $callbacks);
 	
@@ -218,6 +231,10 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 		$validateEntryCallback = $callbacks['validateEntry'];
 	endif;
 	
+	if (!empty($callbacks['adjustEntryValue'])):
+		$adjustEntryValueCallback = $callbacks['adjustEntryValue'];
+	endif;
+	
 	// Check through all entries.
 	$processedEntries = $entries;
 	$formProblems = array();
@@ -226,8 +243,11 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 		if ($entry['type'] === 'checkbox'):
 			$detailValue = isset($submittedValues[$entryID]);
 		else:
-			// TODO: add a callback here:
 			$detailValue = isset($submittedValues[$entryID]) ? trim($submittedValues[$entryID]) : '';
+		endif;
+		
+		if (!empty($adjustEntryValueCallback)):
+			$detailValue = call_user_func($adjustEntryValueCallback, $entry, $detailValue);
 		endif;
 		
 		// Use the entry's info and replace the value with the submitted value.
