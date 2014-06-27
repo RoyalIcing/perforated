@@ -18,7 +18,7 @@ TODO:
 */
 
 
-define ('PERFORATED_VERSION', '1.5.1');
+define ('PERFORATED_VERSION', '1.5.2');
 
 // Perforated uses Glaze to display text and values.
 if (!function_exists('glazeText')) {
@@ -162,19 +162,22 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 	// Fills $entryIDsToProcess with 'entryID' => true for each entry to process.
 	// Use structure if there is one:
 	if (!empty($options['structure'])):
+		$groupIDsToIsFulfilled = array();
 		$entryIDsToProcess = array();
 		$formStructure = $options['structure'];
 		foreach ($formStructure as $formStructureElement):
 			$groupID = $formStructureElement['id'];
 			
 			if (!empty($formStructureElement['dependentOn'])):
+				$groupIDsToIsFulfilled[$groupID] = false;
 				$dependantOnEntryIDs = (array)$formStructureElement['dependentOn'];
 				$dependantEntryIsOn = false;
 				
 				foreach ($dependantOnEntryIDs as $dependantOnEntryID):
 					$dependantEntryIsOn = !empty($submittedValues[$dependantOnEntryID]) || !empty($externalValues[$dependantOnEntryID]);
-					if (!$dependantEntryIsOn)
+					if (!$dependantEntryIsOn):
 						break;
+					endif;
 				endforeach;
 				
 				
@@ -182,15 +185,19 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 					$alsoProcessIf = (array)$formStructureElement['alsoProcessIf'];
 					foreach ($alsoProcessIf as $dependantOnEntryID):
 						$dependantEntryIsOn = !empty($submittedValues[$dependantOnEntryID]) || !empty($externalValues[$dependantOnEntryID]);
-						if (!$dependantEntryIsOn)
+						if (!$dependantEntryIsOn):
 							break;
+						endif;
 					endforeach;
 				endif;
 				
 				// Only use this structure if it is on.
-				if (!$dependantEntryIsOn)
+				if (!$dependantEntryIsOn):
 					continue;
+				endif;
 			endif;
+			
+			$groupIDsToIsFulfilled[$groupID] = true;
 			
 			// Add structure's to the list of those to process.
 			foreach ($formStructureElement['entries'] as $entryID):
@@ -256,12 +263,17 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 		
 		// Validate entry using callback.
 		$entryProblems = call_user_func($validateEntryCallback, $entry, $detailValue);
-		if (!empty($entryProblems))
+		if (!empty($entryProblems)):
 			$formProblems[$entryID] = $entryProblems;
+		endif;
 	endforeach;
 	
 	
 	$results['entries'] = $processedEntries;
+	
+	if (isset($groupIDsToIsFulfilled)):
+		$results['sectionIDsToIsFulfilled'] = $groupIDsToIsFulfilled;
+	endif;
 	
 	// Entries are only valid if there were no problems with them.
 	if (!empty($formProblems)):
@@ -273,6 +285,53 @@ function perforatedFormCheckAndProcess($options, $callbacks = null)
 	
 	
 	return $results;
+}
+
+function perforatedFormIsBeingSubmittedAndHasValidEntries($form)
+{
+	return $form['isBeingSubmitted'] && $form['entriesAreValid'];
+}
+
+function perforatedFormCopyProcessedValuesForEntryIDs($form, $entryIDs, $desiredKeysToEntryIDs = null)
+{
+	$processedEntries = $form['entries'];
+	$copiedValues = array();
+	foreach ($entryIDs as $entryID):
+		if (isset($processedEntries[$entryID])):
+			if (!empty($desiredKeysToEntryIDs[$entryID])):
+				$desiredID = $desiredKeysToEntryIDs[$entryID];
+			else:
+				$desiredID = $entryID;
+			endif;
+			
+			$copiedValues[$desiredID] = $processedEntries[$entryID]['value'];
+		endif;
+	endforeach;
+	
+	return $copiedValues;
+}
+
+function perforatedFormCopyProcessedValuesForGroupWithID($form, $groupID, $desiredKeysToEntryIDs = null)
+{
+	$sectionIDsToIsFulfilled = $form['sectionIDsToIsFulfilled'];
+	if (empty($sectionIDsToIsFulfilled[$groupID])):
+		return null;
+	endif;
+	
+	$entryIDs = null;
+	foreach ($form['structure'] as $group):
+		$groupIDToCheck = $group['id'];
+		if ($groupID === $groupIDToCheck):
+			$entryIDs = $group['entries'];
+			break;
+		endif;
+	endforeach;
+	
+	if (empty($entryIDs)):
+		return null;
+	endif;
+	
+	return perforatedFormCopyProcessedValuesForEntryIDs($form, $entryIDs, $desiredKeysToEntryIDs);
 }
 
 function perforatedFormDisplayEntries($options, $callbacks = null)
@@ -359,28 +418,34 @@ function perforatedFormDisplayEntry($entryID, $entryDetails, $options, $callback
 	$entryValue = !empty($entryDetails['value']) ? $entryDetails['value'] : '';
 	$entryInputName = "{$baseID}[{$entryID}]";
 	$entryTextTag = !empty($options['textTagName']) ? $options['textTagName'] : 'h5';
+	$entryIsRequired = !empty($entryDetails['required']);
 	
-?><label<?php
-glazyAttribute('id', $entryID);
-glazyAttribute('class', $entryType);
-glazyAttribute('data-entry-i-d', $entryID);
-?>><<?=$entryTextTag?>><?php
-	echo glazeText($entryTitle);
-	
-	if (isset($options['problems'][$entryID])):
-		foreach ($options['problems'][$entryID] as $problemID => $problemValue):
-			if (isset($problemIDsToMessages['types'][$entryType][$problemID])):
-				$problemMessage = $problemIDsToMessages['types'][$entryType][$problemID];
-			else:
-				$problemMessage = $problemIDsToMessages['base'][$problemID];
-			endif;
+	$glazyLabel = glazyBegin(array(
+		'tagName' => 'label',
+		'id' => $entryID,
+		'class' => $entryType,
+		'data-entry-i-d' => $entryID
+	));
+	{
+		$textElement = glazyBegin(array(
+			'tagName' => $entryTextTag
+		));
+		{
+			glazyElement('span.title', $entryTitle);
 			
-?>
-<span class="problem"><?= glazeText($problemMessage) ?></span>
-<?php
-		endforeach;
-	endif;
-?></<?=$entryTextTag?>><?php
+			if (isset($options['problems'][$entryID])):
+				foreach ($options['problems'][$entryID] as $problemID => $problemValue):
+					if (isset($problemIDsToMessages['types'][$entryType][$problemID])):
+						$problemMessage = $problemIDsToMessages['types'][$entryType][$problemID];
+					else:
+						$problemMessage = $problemIDsToMessages['base'][$problemID];
+					endif;
+					
+					glazyElement('span.problem', $problemMessage);
+				endforeach;
+			endif;
+		}
+		glazyFinish($textElement);
 
 	if (empty($callbacks['inputElementTypeForEntryType'])):
 		throw new Exception('Perforated: A input element type for entry type callback *must* be set: $callbacks["inputElementTypeForEntryType"] is empty.');
@@ -390,33 +455,35 @@ glazyAttribute('data-entry-i-d', $entryID);
 	
 	$inputType = call_user_func($inputElementTypeForEntryTypeCallback, $entryType);
 
-	if (($inputType === 'text' && empty($entryDetails['multipleLines'])) || $inputType === 'email' || $inputType === 'url' || $inputType === 'number' || $inputType === 'checkbox'):?>
-<input<?php
-glazyAttribute('type', $inputType);
-glazyAttribute('name', $entryInputName);
-glazyAttributeCheck('required', $entryDetails['required'], 'required');
-
-if ($inputType === 'checkbox'):
-	glazyAttributeCheck('checked', $entryDetails['value'], 'checked');
-	glazyAttribute('data-on-title', $entryDetails['titleWhenOn']);
-	glazyAttribute('data-off-title', $entryDetails['titleWhenOff']);
-else:
-	glazyAttribute('value', $entryValue);
-endif;
-
-if ($entryType === 'integer'):
-	glazyAttribute('step', '1');
-endif;
-?>>
-<?php
-	elseif ($inputType === 'text' && !empty($entryDetails['multipleLines'])):?>
-<textarea<?php
-glazyAttribute('name', $entryInputName);
-glazyAttributeCheck('required', $entryDetails['required'], 'required');
-?> cols="40" rows="4"><?= glazeText($entryValue) ?></textarea>
-<?php
+	if (($inputType === 'text' && empty($entryDetails['multipleLines'])) || $inputType === 'email' || $inputType === 'url' || $inputType === 'number' || $inputType === 'checkbox'):
+		$input = glazyBegin('input');
+		{
+			glazyAttribute('type', $inputType);
+			glazyAttribute('name', $entryInputName);
+			glazyAttributeCheck('required', $entryIsRequired);
+			
+			if ($inputType === 'checkbox'):
+				glazyAttributeCheck('checked', $entryDetails['value'], 'checked');
+				glazyAttribute('data-on-title', $entryDetails['titleWhenOn']);
+				glazyAttribute('data-off-title', $entryDetails['titleWhenOff']);
+			else:
+				glazyAttribute('value', $entryValue);
+			endif;
+			
+			if ($entryType === 'integer'):
+				glazyAttribute('step', '1');
+			endif;
+		}
+		glazyFinish($input);
+	elseif ($inputType === 'text' && !empty($entryDetails['multipleLines'])):
+		glazyElement(array(
+			'tagName' => 'textarea',
+			'name' => $entryInputName,
+			'required' => !empty($entryDetails['required']),
+			'cols' => 40,
+			'rows' => 4
+		), $entryValue);
 	endif;
-?>
-</label>
-<?php
+	}
+	glazyFinish($glazyLabel);
 }
